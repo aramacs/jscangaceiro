@@ -1,13 +1,10 @@
 class Negociacao {
 
   constructor(data, quantidade, valor) {
-    //previne a possibildade de se passar uma variavel  que instacie um new Date () para o construtor. 
-    //Sendo assim, não é possível
-    // a referência da variável para alterar a data da Negociacao
-    this._data = new Date(data.getTime());
+    //Utilizando o Object.assign se consegue receber na instância da classe os valores das propriedades
+    //recebidas pelo constructor da classe.
+    Object.assign(this, { _data: new Date(data.getTime()), _quantidade: qyantidade, _valor: valor});
     
-    this._quantidade = quantidade;
-    this._valor = valor;
     Object.freeze(this);
   }
   
