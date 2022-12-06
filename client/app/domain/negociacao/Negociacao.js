@@ -3,9 +3,9 @@ class Negociacao {
   constructor(_data, _quantidade, _valor) {
     //Utilizando o Object.assign se consegue receber na instância da classe os valores das propriedades
     //recebidas pelo constructor da classe.
-  Object.assign(this, { _quantidade, _valor});
-  this._data = new Date(_data.getTime());
-  Object.freeze(this);
+    Object.assign(this, { _quantidade, _valor});
+    this._data = new Date(_data.getTime());
+    Object.freeze(this);
   }
   
   get volume() {
