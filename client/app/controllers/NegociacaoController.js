@@ -1,10 +1,10 @@
 class NegociacaoController {
     
-  contructor() {
+  constructor() {
 
     let $ = document.querySelector.bind(document);
 
-     this._inputdata = $('#data');
+     this._inputData = $('#data');
      this._inputQuantidade = $('#quantidade');
      this._inputValor = $('#valor');
   }
@@ -12,9 +12,13 @@ class NegociacaoController {
   adiciona(event) {
 
     event.preventDefault();
+    // console.log(typeof(this._inputData.value));
+
+    let data = new Date(this._inputData.value.split('-'));
+    console.log(data)
 
     let negociacao = new Negociacao(
-      this._inputdata.value,
+      this._inputData.value,
       parseInt(this._inputQuantidade.value),
       parseFloat(this._inputValor.value)
     );
