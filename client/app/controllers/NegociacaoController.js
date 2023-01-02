@@ -1,5 +1,4 @@
-class NegociacaoController {
-    
+class NegociacaoController {    
   constructor() {
 
     let $ = document.querySelector.bind(document);
@@ -12,19 +11,17 @@ class NegociacaoController {
   adiciona(event) {
 
     event.preventDefault();
-    // console.log(typeof(this._inputData.value));
 
-    let data = new Date(this._inputData.value.replace(/-/g, ','));
+    //insere o spread operator pra resolver a data para o constructor
+    // let data = new Date(...this._inputData.value.split('-');
 
-    let negociacao = new Negociacao(
-      this._inputData.value,
-      parseInt(this._inputQuantidade.value),
-      parseFloat(this._inputValor.value)
-    );
-    console.log(negociacao);
-    // let data = new Date (this._inputData.value)
-    // console.log(data);
-
+    let data = new Date(...
+    this._inputData.value
+    .split('-')
+    .map(function(item, indice) {
+          return item - indice % 2;
+      }));
+    console.log(data)
     
   }
 }
