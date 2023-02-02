@@ -1,4 +1,5 @@
 class MensagemView extends View {
+
   constructor(seletor) {
     super(seletor)
     this._elemento = document.querySelector(seletor);
