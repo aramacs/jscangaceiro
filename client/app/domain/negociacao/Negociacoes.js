@@ -1,6 +1,9 @@
 class Negociacoes {
-  constructor () {
+  constructor (contexto,armadilha) {
     this._negociacoes = [];
+    this._armadilha = armadilha;
+    this._contexto = contexto;
+    Object.freeze(this);
   }
 
   get volumeTotal() {
@@ -12,10 +15,18 @@ class Negociacoes {
     
   adiciona(negociacao) {
     this._negociacoes.push(negociacao);
+
+    this._armadilha.call(this._contexto,this);  
   }
 
   paraArray() {
     //retorna uma nova referência criada com os itens de this._negociacoes
     return [].concat(this._negociacoes);
+  }
+
+  esvazia() {
+    this._negociacoes.length = 0;
+  
+    this._armadilha.call(this._contexto,this);
   }
 }
