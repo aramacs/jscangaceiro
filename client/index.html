@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html
 <html>
 
 <head>
@@ -55,21 +55,22 @@
   <script src="app/ui/views/MensagemView.js"></script>
   <script src="app/app.js"></script>
   <script>
-    const negociacao = new Proxy(new Negociacao(new Date(), 2, 100), {
-      get(target, prop, receiver) {
-        console.log(`a propriedade ${prop} caiu na armadilha!`);
-        
-          return target[prop];
-      },
-      set(target, prop, value, receiver) {
-        console.log(`${prop} guarda ${target[prop]}, recebera ${value}`)
+    const negociacao = new Proxy(new Negociacoes(), {
 
-        target[prop] = value;
-        return target[prop] == value;
+      get(target, prop, receiver) {
+
+        if (typeof (target[prop]) == typeof (Function) && ['adiciona', 'esvazia']
+          .includes(prop)){
+          return function() {
+            console.log(`"${prop}" disparou a armadilha`);
+              target[prop].apply(target, arguments);
+          }
+        } else {
+          return target[prop];
+        } 
       }
     });
-    negociacao.quantidade = 10;
-    negociacao.valor = 100; 
+    negociacoes.adiciona(new Negociacao(new Date(), 1, 100));
   </script>
 </body>
 
