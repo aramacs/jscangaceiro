@@ -60,10 +60,16 @@
         console.log(`a propriedade ${prop} caiu na armadilha!`);
         
           return target[prop];
+      },
+      set(target, prop, value, receiver) {
+        console.log(`${prop} guarda ${target[prop]}, recebera ${value}`)
+
+        target[prop] = value;
+        return target[prop] == value;
       }
     });
-    console.log(negociacao.quantidade);
-    console.log(negociacao.valor);
+    negociacao.quantidade = 10;
+    negociacao.valor = 100; 
   </script>
 </body>
 
