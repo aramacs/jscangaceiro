@@ -73,7 +73,13 @@ class NegociacaoController {
         
         if(xhr.status == 200) {
 
-          console.log('Obtendo as negociacoes do servidor');
+
+          JSON
+          .parse(xhr.responseText)
+          .map(objeto => new Negociacao(objeto.data, objeto.quantidade, objeto.valor))
+          .forEach(negociacao => this._negociacoes.adiciona(negociacao));
+
+          this._mensagem.texto = 'Negociacoes importadas com sucesso!'
         } else {
           
           console.log('Não foi possível obter as negociacoes da semana.');
