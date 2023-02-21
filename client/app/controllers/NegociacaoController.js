@@ -17,9 +17,13 @@ class NegociacaoController {
       new MensagemView('#mensagemView'),
       'texto'
     );
+
+    this._service = new NegociacaoService();
   }
 
+
   adiciona(event) {
+
     try {
 
       event.preventDefault();
@@ -63,29 +67,20 @@ class NegociacaoController {
     this._mensagem.texto = 'Negociacoes apagadas com sucesso';
   }
 
-  importaNegociacoes(){
+  importaNegociacoes() {
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET','negociacoes/semana');
+    this._service.obterNegociacoesDaSemana((err, negociacoes) => {
 
-    xhr.onreadystatechange = () => {
-      if(xhr.readyState == 4) {
-        
-        if(xhr.status == 200) {
+      if(err) {
 
-
-          JSON
-          .parse(xhr.responseText)
-          .map(objeto => new Negociacao(objeto.data, objeto.quantidade, objeto.valor))
-          .forEach(negociacao => this._negociacoes.adiciona(negociacao));
-
-          this._mensagem.texto = 'Negociacoes importadas com sucesso!'
-        } else {
-          
-          console.log('Não foi possível obter as negociacoes da semana.');
-        }
+        this._mensagem.texto = 'Não foi possível obter as negociações da semana';
+        return;
       }
-    }
-    xhr.send();
+
+      negociacoes.forEach(negociacao => 
+        this._negociacoes.adiciona(negociacao));
+
+      this._mensagem.texto = 'Negociacoes importadas com sucesso';
+    });
   }
 }
