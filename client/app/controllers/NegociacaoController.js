@@ -36,7 +36,7 @@ class NegociacaoController {
       console.log(err);
       console.log(err.stack);
 
-      if(err instanceof DataInvalidaException) {
+      if (err instanceof DataInvalidaException) {
 
         this._mensagem.texto = err.message;
 
@@ -69,13 +69,27 @@ class NegociacaoController {
 
   importaNegociacoes() {
 
-    this._service.obterNegociacoesDaSemana()
-     .then(
-     negociacoes => {
+    const negociacoes = [];
+
+    this._service
+      .obterNegociacoesDaSemana()
+      .then(semana => {
+
+        negociacoes.push(...semana);
+
+        return this._service.obtemNegociacaoDaSemanaAnterior();
+      })
+      .then(anterior => {
+        negociacoes.push(...anterior);
+        return this._service.obtemNegociacaoDaSemanaRetrasada();
+      })
+      .then(retrasada => {
+        negociacoes.push(...retrasada)
         negociacoes.forEach(negociacao => this._negociacoes.adiciona(negociacao));
-        this._mensagem.texto = 'Negociacoes importadas com sucesso';
-      },
-      err => this._mensagem.texto = err
-    )
+
+       this._mensagem.texto = 'Negociacoes importadas com sucesso'
+      })
+      .catch(err => this._mensagem.texto = err);
+
   }
 }

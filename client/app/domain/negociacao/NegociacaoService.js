@@ -1,34 +1,63 @@
 class NegociacaoService {
 
-  obterNegociacoesDaSemana(cb) {
+  constructor() {
 
-    return new Promise((resolve, reject) => {
+    this._http = new HttpService();
+  }
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'negociacoes/semana');
+  obterNegociacoesDaSemana() {
 
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState == 4) {
+    return this._http
+      .get('negociacoes/semana')
+      .then(
+        dados => {
 
-        if (xhr.status == 200) {
+          const negociacoes = dados.map(objeto =>
+            new Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor));
 
+          return negociacoes;
+        },
+        err => {
 
-          JSON
-            .parse(xhr.responseText)
-            .map(objeto => new Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor));
-
-            resolve(null, negociacoes);
-
-        } else {
-
-          console.log(xhr.responseText);
-
-          reject('Não foi possível obter as negociacoes da semana', null)
+          throw new Error('Não foi possível obter as  negociacoes');
         }
-      }
-    };
-    xhr.send();
-    })
+      );
+  }
 
+  obtemNegociacaoDaSemanaAnterior() {
+
+    return this._http
+      .get('negociacoes/anterior')
+      .then(
+        dados => {
+
+          const negociacoes = dados.map(objeto =>
+              new Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor));
+
+          return negociacoes;
+        },
+        err => {
+
+          throw new Error('Não foi possível obter as negociacoes da semana anterior');
+        }
+      )
+  }
+
+  obtemNegociacaoDaSemanaRetrasada() {
+
+    return this._http
+    .get('negociacoes/retrasada')
+    .then(
+        dados => {
+
+          const negociacoes = dados.map(objeto =>
+          new Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor));
+
+          return negociacoes;
+        },
+        err => {
+          throw new Error('Não foi possível obter as  negociacoes da semana retrasada');
+        }
+      );
   }
 }
