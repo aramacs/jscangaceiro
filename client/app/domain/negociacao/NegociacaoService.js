@@ -60,4 +60,20 @@ class NegociacaoService {
         }
       );
   }
+
+  obtemNegociacaoDoPeriodo() {
+
+    Promise.all([
+
+      this._service.obtemNegociacoesDaSemana(),
+      this._service.obtemNegociacoesDaSemanaAnterior(),
+      this._service.obtemNegogociacoesDaSemanaRetrasada()
+    ])
+     .then(periodo => {
+
+        return periodo
+        .reduce((novoArray, item) => novoArray.concat(item), [])
+      })
+     .catch(err => this._mensagem.texto = err);
+  }
 }
